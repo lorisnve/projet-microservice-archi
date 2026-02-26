@@ -54,6 +54,22 @@ export class BookService implements IBookService {
       totalPages: Math.ceil(count / size),
     }, 'Liste des livres');
   }
+  async findById(id: string): Promise<BookDto> {
+    const book = await this.bookRepository.findById(id);
+    if (!book) {
+      throw Object.assign(new Error('Livre introuvable'), { status: 404 });
+    }
+
+    return {
+      id: book.id,
+      title: book.title,
+      author: book.author,
+      isbn: book.isbn,
+      available: book.available,
+      createdAt: book.createdAt,
+      updatedAt: book.updatedAt,
+    };
+  }
 }
 
 export default new BookService();

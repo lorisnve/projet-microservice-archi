@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { ValidationError, UniqueConstraintError, DatabaseError } from 'sequelize';
 import { ApiResponse } from '../utils/ApiResponse.js';
+import { log } from 'node:console';
 
 export function errorHandler(
   err: Error,
@@ -19,6 +20,7 @@ export function errorHandler(
   }
 
   if (err instanceof DatabaseError) {
+    log('Erreur de base de données :', err);
     return res.status(500).json(ApiResponse.error('Erreur base de données', 500));
   }
 
