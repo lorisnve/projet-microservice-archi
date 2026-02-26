@@ -20,6 +20,22 @@ export interface JwtPayload {
   role: Role;
 }
 
+export interface CreateBookDto {
+  title: string;
+  author: string;
+  isbn: string;
+}
+
+export interface BookDto {
+  id: string;
+  title: string;
+  author: string;
+  isbn: string;
+  available: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Extend Express Request to include authenticated user
 declare global {
   namespace Express {
