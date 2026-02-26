@@ -5,7 +5,9 @@ import sequelize from './config/database.js';
 import authRoutes from './routes/AuthRoutes.js';
 import monitoringRoutes from './routes/MonitoringRoutes.js';
 import { httpRequestsTotal, httpRequestDurationSeconds } from './controllers/MonitoringController.js';
+import bookRoutes from './routes/BookRoutes.js';
 import { errorHandler } from './middlewares/ErrorHandler.js';
+import { seedAdminUser } from './seeders/adminSeeder.js';
 
 const app: Application = express();
 const PORT = process.env.PORT ?? 8080;
@@ -29,6 +31,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use('/', monitoringRoutes);
 
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/books', bookRoutes);
 
 app.use(errorHandler);
 
@@ -38,6 +41,7 @@ const start = async (): Promise<void> => {
     console.log('Connexion à la base de données réussie.');
     await sequelize.sync({ alter: true });
     console.log('Modèles synchronisés avec la base de données.');
+    await seedAdminUser();
     app.listen(PORT, () => {
       console.log(`Serveur démarré sur le port ${PORT}`);
     });
