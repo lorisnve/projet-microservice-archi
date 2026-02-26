@@ -1,8 +1,10 @@
 import 'dotenv/config';
-import express, { type Application } from 'express';
+import express, { type Application, type Request, type Response, type NextFunction } from 'express';
 import cors from 'cors';
 import sequelize from './config/database.js';
 import authRoutes from './routes/AuthRoutes.js';
+import monitoringRoutes from './routes/MonitoringRoutes.js';
+import { httpRequestsTotal, httpRequestDurationSeconds } from './controllers/MonitoringController.js';
 import { errorHandler } from './middlewares/ErrorHandler.js';
 
 const app: Application = express();
@@ -11,18 +13,25 @@ const PORT = process.env.PORT ?? 8080;
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/v1/auth', authRoutes);
-
-// Health check
-app.get('/health', (_req, res) => {
-  res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
+// tracking des métriques Prometheus
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = (Date.now() - start) / 1000;
+    const labels = { method: req.method, route: req.route?.path ?? req.path, status_code: String(res.statusCode) };
+    httpRequestsTotal.inc(labels);
+    httpRequestDurationSeconds.observe(labels, duration);
+  });
+  next();
 });
 
-// Error handler (doit être après les routes)
+// routes de monitoring (health + metrics)
+app.use('/', monitoringRoutes);
+
+app.use('/api/v1/auth', authRoutes);
+
 app.use(errorHandler);
 
-// Start server
 const start = async (): Promise<void> => {
   try {
     await sequelize.authenticate();
