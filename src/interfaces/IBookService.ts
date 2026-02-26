@@ -4,4 +4,5 @@ import type { ApiResponseBody } from '../utils/ApiResponse.js';
 export interface IBookService {
   create(data: CreateBookDto): Promise<BookDto>;
   findAll(query: BookListQuery): Promise<ApiResponseBody<BookDto[]>>;
+  findById(id: string): Promise<BookDto>;
 }
