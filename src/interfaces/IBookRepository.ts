@@ -1,9 +1,9 @@
 import type Book from '../models/Book.js';
-import type { CreateBookDto } from '../types/index.js';
+import type { CreateBookDto, BookListQuery } from '../types/index.js';
 
 export interface IBookRepository {
   findById(id: string): Promise<Book | null>;
   findByIsbn(isbn: string): Promise<Book | null>;
-  findAll(): Promise<Book[]>;
+  findAllPaginated(query: BookListQuery): Promise<{ rows: Book[]; count: number }>;
   create(data: CreateBookDto): Promise<Book>;
 }
