@@ -36,6 +36,14 @@ export interface BookDto {
   updatedAt: Date;
 }
 
+export interface BookListQuery {
+  page?: number;
+  size?: number;
+  title?: string;
+  author?: string;
+  available?: boolean;
+}
+
 // Extend Express Request to include authenticated user
 declare global {
   namespace Express {

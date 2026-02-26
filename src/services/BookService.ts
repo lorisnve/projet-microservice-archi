@@ -1,7 +1,9 @@
-import defaultBookRepository from '../repositories/BookRepository.js';
+﻿import defaultBookRepository from '../repositories/BookRepository.js';
 import type { IBookRepository } from '../interfaces/IBookRepository.js';
 import type { IBookService } from '../interfaces/IBookService.js';
-import type { BookDto, CreateBookDto } from '../types/index.js';
+import type { BookDto, BookListQuery, CreateBookDto } from '../types/index.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import type { ApiResponseBody } from '../utils/ApiResponse.js';
 
 export class BookService implements IBookService {
   private readonly bookRepository: IBookRepository;
@@ -27,6 +29,30 @@ export class BookService implements IBookService {
       createdAt: book.createdAt,
       updatedAt: book.updatedAt,
     };
+  }
+
+  async findAll(query: BookListQuery): Promise<ApiResponseBody<BookDto[]>> {
+    const page = Number(query.page ?? 1);
+    const size = Number(query.size ?? 10);
+
+    const { rows, count } = await this.bookRepository.findAllPaginated({ ...query, page, size });
+
+    const data: BookDto[] = rows.map((book) => ({
+      id: book.id,
+      title: book.title,
+      author: book.author,
+      isbn: book.isbn,
+      available: book.available,
+      createdAt: book.createdAt,
+      updatedAt: book.updatedAt,
+    }));
+
+    return ApiResponse.paginated(data, {
+      page,
+      size,
+      total: count,
+      totalPages: Math.ceil(count / size),
+    }, 'Liste des livres');
   }
 }
 
