@@ -36,6 +36,28 @@ export class AuthService implements IAuthService {
       token,
     };
   }
+  async login({ email, password }: { email: string; password: string }): Promise<AuthResult> {
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) {
+      throw Object.assign(new Error('Email ou mot de passe incorrect'), { status: 401 });
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      throw Object.assign(new Error('Email ou mot de passe incorrect'), { status: 401 });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET as string,
+      { expiresIn: JWT_EXPIRY }
+    );
+
+    return {
+      user: { id: user.id, email: user.email, role: user.role },
+      token,
+    };
+  }
 }
 
 export default new AuthService();
