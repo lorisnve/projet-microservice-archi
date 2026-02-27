@@ -5,6 +5,12 @@ export interface CreateUserDto {
   password: string;
 }
 
+export interface RegisterResult {
+  id: string;
+  email: string;
+  role: Role;
+}
+
 export interface AuthResult {
   user: {
     id: string;
