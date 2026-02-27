@@ -67,6 +67,7 @@ export interface BookListQuery {
 
 // Extend Express Request to include authenticated user
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       user?: JwtPayload;
