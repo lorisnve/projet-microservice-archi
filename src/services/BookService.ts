@@ -94,6 +94,13 @@ export class BookService implements IBookService {
       updatedAt: book.updatedAt,
     };
   }
+
+  async delete(id: string): Promise<void> {
+    const deleted = await this.bookRepository.delete(id);
+    if (!deleted) {
+      throw Object.assign(new Error('Livre introuvable'), { status: 404 });
+    }
+  }
 }
 
 export default new BookService();

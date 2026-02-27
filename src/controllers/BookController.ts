@@ -12,6 +12,7 @@ export class BookController {
     this.findAll = this.findAll.bind(this);
     this.findById = this.findById.bind(this);
     this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -85,6 +86,22 @@ export class BookController {
     try {
       const result = await this.bookService.update(id, { title, author, isbn, available });
       res.status(200).json(ApiResponse.success(result, 'Livre mis à jour avec succès'));
+    } catch (err) {
+      next(err);
+    }
+  }
+  async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { id } = req.params as { id: string };
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+    if (!uuidRegex.test(id)) {
+      res.status(400).json(ApiResponse.error('Identifiant invalide : le format attendu est xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (UUID v4)', 400));
+      return;
+    }
+
+    try {
+      await this.bookService.delete(id);
+      res.status(200).json(ApiResponse.success(null, 'Livre supprimé avec succès'));
     } catch (err) {
       next(err);
     }
