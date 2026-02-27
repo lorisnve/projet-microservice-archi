@@ -33,6 +33,14 @@ export interface UpdateBookDto {
   available?: boolean;
 }
 
+export interface BorrowDto {
+  id: string;
+  bookId: string;
+  userId: string;
+  borrowedAt: Date;
+  returnedAt: Date | null;
+}
+
 export interface BookDto {
   id: string;
   title: string;
