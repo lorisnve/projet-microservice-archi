@@ -1,4 +1,4 @@
-import type Book from '../models/Book.js';
+import type Book from '../models/book.js';
 import type { CreateBookDto, BookListQuery, UpdateBookDto } from '../types/index.js';
 
 export interface IBookRepository {

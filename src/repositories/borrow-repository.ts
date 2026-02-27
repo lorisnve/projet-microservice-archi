@@ -1,5 +1,5 @@
-import Borrow from '../models/Borrow.js';
-import type { IBorrowRepository } from '../interfaces/IBorrowRepository.js';
+﻿import Borrow from '../models/borrow.js';
+import type { IBorrowRepository } from '../interfaces/borrow-repository.interface.js';
 
 export class BorrowRepository implements IBorrowRepository {
   async create(bookId: string, userId: string): Promise<Borrow> {

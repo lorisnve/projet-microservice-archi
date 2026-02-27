@@ -1,7 +1,7 @@
-import type { Request, Response, NextFunction } from 'express';
+﻿import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import type { JwtPayload, Role } from '../types/index.js';
-import { ApiResponse } from '../utils/ApiResponse.js';
+import { ApiResponse } from '../utils/api-response.js';
 
 export const jwtAuth = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers['authorization'];
@@ -16,14 +16,14 @@ export const jwtAuth = (req: Request, res: Response, next: NextFunction): void =
     req.user = payload;
     next();
   } catch {
-    res.status(401).json(ApiResponse.error('Token invalide ou expiré', 401));
+    res.status(401).json(ApiResponse.error('Token invalide ou expirÃ©', 401));
   }
 };
 
 export const requireRole = (...roles: Role[]) =>
   (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user || !roles.includes(req.user.role)) {
-      res.status(403).json(ApiResponse.error('Accès refusé : droits insuffisants', 403));
+      res.status(403).json(ApiResponse.error('AccÃ¨s refusÃ© : droits insuffisants', 403));
       return;
     }
     next();

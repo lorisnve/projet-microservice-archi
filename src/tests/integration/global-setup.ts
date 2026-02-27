@@ -25,9 +25,9 @@ export async function setup(): Promise<void> {
   await client.end();
 
   const { default: sequelize } = await import('../../config/database.js');
-  await import('../../models/User.js');
-  await import('../../models/Book.js');
-  await import('../../models/Borrow.js');
+  await import('../../models/user.js');
+  await import('../../models/book.js');
+  await import('../../models/borrow.js');
   await sequelize.sync({ force: true });
   await sequelize.close();
 }

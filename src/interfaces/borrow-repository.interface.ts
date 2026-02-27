@@ -1,4 +1,4 @@
-import type Borrow from '../models/Borrow.js';
+import type Borrow from '../models/borrow.js';
 
 export interface IBorrowRepository {
   create(bookId: string, userId: string): Promise<Borrow>;

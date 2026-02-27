@@ -1,7 +1,7 @@
 ﻿import 'dotenv/config';
 import sequelize from './config/database.js';
 import app from './app.js';
-import { seedAdminUser } from './seeders/adminSeeder.js';
+import { seedAdminUser } from './seeders/admin-seeder.js';
 
 const PORT = process.env.PORT ?? 8080;
 

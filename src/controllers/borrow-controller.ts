@@ -1,7 +1,7 @@
-import type { Request, Response, NextFunction } from 'express';
-import defaultBorrowService from '../services/BorrowService.js';
-import type { IBorrowService } from '../interfaces/IBorrowService.js';
-import { ApiResponse } from '../utils/ApiResponse.js';
+﻿import type { Request, Response, NextFunction } from 'express';
+import defaultBorrowService from '../services/borrow-service.js';
+import type { IBorrowService } from '../interfaces/borrow-service.interface.js';
+import { ApiResponse } from '../utils/api-response.js';
 
 const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -26,7 +26,7 @@ export class BorrowController {
 
     try {
       const result = await this.borrowService.borrow(bookId, userId);
-      res.status(201).json(ApiResponse.success(result, 'Livre emprunté avec succès', 201));
+      res.status(201).json(ApiResponse.success(result, 'Livre empruntÃ© avec succÃ¨s', 201));
     } catch (err) {
       next(err);
     }
@@ -44,7 +44,7 @@ export class BorrowController {
 
     try {
       const result = await this.borrowService.returnBorrow(bookId, userId);
-      res.status(200).json(ApiResponse.success(result, 'Livre retourné avec succès', 200));
+      res.status(200).json(ApiResponse.success(result, 'Livre retournÃ© avec succÃ¨s', 200));
     } catch (err) {
       next(err);
     }

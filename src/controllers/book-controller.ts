@@ -1,7 +1,7 @@
 ﻿import type { Request, Response, NextFunction } from 'express';
-import defaultBookService from '../services/BookService.js';
-import type { IBookService } from '../interfaces/IBookService.js';
-import { ApiResponse } from '../utils/ApiResponse.js';
+import defaultBookService from '../services/book-service.js';
+import type { IBookService } from '../interfaces/book-service.interface.js';
+import { ApiResponse } from '../utils/api-response.js';
 
 export class BookController {
   private readonly bookService: IBookService;

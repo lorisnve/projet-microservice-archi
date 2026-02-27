@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import bookController from '../controllers/BookController.js';
-import borrowController from '../controllers/BorrowController.js';
-import { jwtAuth, requireRole } from '../middlewares/JwtAuthMiddleware.js';
+﻿import { Router } from 'express';
+import bookController from '../controllers/book-controller.js';
+import borrowController from '../controllers/borrow-controller.js';
+import { jwtAuth, requireRole } from '../middlewares/jwt-auth-middleware.js';
 
 const router = Router();
 
