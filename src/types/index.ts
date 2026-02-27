@@ -26,6 +26,13 @@ export interface CreateBookDto {
   isbn: string;
 }
 
+export interface UpdateBookDto {
+  title?: string;
+  author?: string;
+  isbn?: string;
+  available?: boolean;
+}
+
 export interface BookDto {
   id: string;
   title: string;
