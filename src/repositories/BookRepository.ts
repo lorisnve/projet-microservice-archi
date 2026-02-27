@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import Book from '../models/Book.js';
 import type { IBookRepository } from '../interfaces/IBookRepository.js';
-import type { BookListQuery, CreateBookDto } from '../types/index.js';
+import type { BookListQuery, CreateBookDto, UpdateBookDto } from '../types/index.js';
 
 export class BookRepository implements IBookRepository {
   async findById(id: string): Promise<Book | null> {
@@ -30,6 +30,12 @@ export class BookRepository implements IBookRepository {
 
   async create(data: CreateBookDto): Promise<Book> {
     return Book.create(data);
+  }
+
+  async update(id: string, data: UpdateBookDto): Promise<Book | null> {
+    const book = await Book.findByPk(id);
+    if (!book) return null;
+    return book.update(data);
   }
 }
 
