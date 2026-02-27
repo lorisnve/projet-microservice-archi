@@ -11,5 +11,6 @@ router.post('/', jwtAuth, requireRole('ADMIN'), bookController.create);
 router.put('/:id', jwtAuth, requireRole('ADMIN'), bookController.update);
 router.delete('/:id', jwtAuth, requireRole('ADMIN'), bookController.delete);
 router.post('/:id/borrow', jwtAuth, borrowController.borrow);
+router.post('/:id/return', jwtAuth, borrowController.returnBook);
 
 export default router;

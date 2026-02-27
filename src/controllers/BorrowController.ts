@@ -11,6 +11,7 @@ export class BorrowController {
   constructor(service: IBorrowService = defaultBorrowService) {
     this.borrowService = service;
     this.borrow = this.borrow.bind(this);
+    this.returnBook = this.returnBook.bind(this);
   }
 
   async borrow(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -26,6 +27,24 @@ export class BorrowController {
     try {
       const result = await this.borrowService.borrow(bookId, userId);
       res.status(201).json(ApiResponse.success(result, 'Livre emprunté avec succès', 201));
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async returnBook(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { id: bookId } = req.params as { id: string };
+
+    if (!uuidRegex.test(bookId)) {
+      res.status(400).json(ApiResponse.error('Identifiant invalide : le format attendu est xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (UUID v4)', 400));
+      return;
+    }
+
+    const userId = req.user!.id;
+
+    try {
+      const result = await this.borrowService.returnBorrow(bookId, userId);
+      res.status(200).json(ApiResponse.success(result, 'Livre retourné avec succès', 200));
     } catch (err) {
       next(err);
     }
