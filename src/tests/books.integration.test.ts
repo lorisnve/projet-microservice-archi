@@ -129,7 +129,7 @@ describe('Books API', () => {
     });
 
     it('returns 409 if ISBN belongs to another book', async () => {
-      const b1 = await request(app)
+      const _b1 = await request(app)
         .post('/api/v1/books')
         .set('Authorization', 'Bearer ' + adminToken)
         .send(bookPayload);
