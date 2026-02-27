@@ -11,6 +11,7 @@ export class BookController {
     this.create = this.create.bind(this);
     this.findAll = this.findAll.bind(this);
     this.findById = this.findById.bind(this);
+    this.update = this.update.bind(this);
   }
 
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -46,6 +47,7 @@ export class BookController {
       next(err);
     }
   }
+
   async findById(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { id } = req.params as { id: string };
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -58,6 +60,31 @@ export class BookController {
     try {
       const result = await this.bookService.findById(id);
       res.status(200).json(ApiResponse.success(result, 'Livre trouvé'));
+    } catch (err) {
+      next(err);
+    }
+  }
+  
+  async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { id } = req.params as { id: string };
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+    if (!uuidRegex.test(id)) {
+      res.status(400).json(ApiResponse.error('Identifiant invalide : le format attendu est xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (UUID v4)', 400));
+      return;
+    }
+
+    const body = (req.body ?? {}) as { title?: string; author?: string; isbn?: string; available?: boolean };
+    const { title, author, isbn, available } = body;
+
+    if (!title || !author || !isbn || available === undefined) {
+      res.status(400).json(ApiResponse.error('Les champs title, author, isbn et available sont requis', 400));
+      return;
+    }
+
+    try {
+      const result = await this.bookService.update(id, { title, author, isbn, available });
+      res.status(200).json(ApiResponse.success(result, 'Livre mis à jour avec succès'));
     } catch (err) {
       next(err);
     }

@@ -1,7 +1,7 @@
 ﻿import defaultBookRepository from '../repositories/BookRepository.js';
 import type { IBookRepository } from '../interfaces/IBookRepository.js';
 import type { IBookService } from '../interfaces/IBookService.js';
-import type { BookDto, BookListQuery, CreateBookDto } from '../types/index.js';
+import type { BookDto, BookListQuery, CreateBookDto, UpdateBookDto } from '../types/index.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import type { ApiResponseBody } from '../utils/ApiResponse.js';
 
@@ -56,6 +56,30 @@ export class BookService implements IBookService {
   }
   async findById(id: string): Promise<BookDto> {
     const book = await this.bookRepository.findById(id);
+    if (!book) {
+      throw Object.assign(new Error('Livre introuvable'), { status: 404 });
+    }
+
+    return {
+      id: book.id,
+      title: book.title,
+      author: book.author,
+      isbn: book.isbn,
+      available: book.available,
+      createdAt: book.createdAt,
+      updatedAt: book.updatedAt,
+    };
+  }
+
+  async update(id: string, data: UpdateBookDto): Promise<BookDto> {
+    if (data.isbn) {
+      const existing = await this.bookRepository.findByIsbn(data.isbn);
+      if (existing && existing.id !== id) {
+        throw Object.assign(new Error('Un livre avec cet ISBN existe déjà'), { status: 409 });
+      }
+    }
+
+    const book = await this.bookRepository.update(id, data);
     if (!book) {
       throw Object.assign(new Error('Livre introuvable'), { status: 404 });
     }
