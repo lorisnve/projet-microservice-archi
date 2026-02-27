@@ -8,5 +8,6 @@ router.get('/', jwtAuth, bookController.findAll);
 router.get('/:id', jwtAuth, bookController.findById);
 router.post('/', jwtAuth, requireRole('ADMIN'), bookController.create);
 router.put('/:id', jwtAuth, requireRole('ADMIN'), bookController.update);
+router.delete('/:id', jwtAuth, requireRole('ADMIN'), bookController.delete);
 
 export default router;
