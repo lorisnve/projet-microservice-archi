@@ -6,6 +6,7 @@ import authRoutes from './routes/AuthRoutes.js';
 import monitoringRoutes from './routes/MonitoringRoutes.js';
 import { httpRequestsTotal, httpRequestDurationSeconds } from './controllers/MonitoringController.js';
 import bookRoutes from './routes/BookRoutes.js';
+import './models/Borrow.js';
 import { errorHandler } from './middlewares/ErrorHandler.js';
 import { seedAdminUser } from './seeders/adminSeeder.js';
 
