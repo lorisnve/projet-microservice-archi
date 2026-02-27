@@ -1,7 +1,7 @@
-import type { Request, Response, NextFunction } from 'express';
-import defaultAuthService from '../services/AuthService.js';
-import type { IAuthService } from '../interfaces/IAuthService.js';
-import { ApiResponse } from '../utils/ApiResponse.js';
+﻿import type { Request, Response, NextFunction } from 'express';
+import defaultAuthService from '../services/auth-service.js';
+import type { IAuthService } from '../interfaces/auth-service.interface.js';
+import { ApiResponse } from '../utils/api-response.js';
 
 export class AuthController {
   private readonly authService: IAuthService;
@@ -23,7 +23,7 @@ export class AuthController {
 
     try {
       const result = await this.authService.register({ email, password });
-      res.status(201).json(ApiResponse.success(result, 'Inscription réussie', 201));
+      res.status(201).json(ApiResponse.success(result, 'Inscription rÃ©ussie', 201));
     } catch (err) {
       next(err);
     }
@@ -39,7 +39,7 @@ export class AuthController {
 
     try {
       const result = await this.authService.login({ email, password });
-      res.status(200).json(ApiResponse.success(result, 'Connexion réussie'));
+      res.status(200).json(ApiResponse.success(result, 'Connexion rÃ©ussie'));
     } catch (err) {
       next(err);
     }

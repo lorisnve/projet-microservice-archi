@@ -1,5 +1,5 @@
-import User from '../models/User.js';
-import type { IUserRepository } from '../interfaces/IUserRepository.js';
+﻿import User from '../models/user.js';
+import type { IUserRepository } from '../interfaces/user-repository.interface.js';
 import type { CreateUserDto } from '../types/index.js';
 
 export class UserRepository implements IUserRepository {

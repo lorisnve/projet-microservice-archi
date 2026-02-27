@@ -9,7 +9,7 @@ export default defineConfig({
     environment: 'node',
     include: ['src/tests/**/*.integration.test.ts'],
     env: testEnv as Record<string, string>,
-    globalSetup: ['src/tests/integration/globalSetup.ts'],
+    globalSetup: ['src/tests/integration/global-setup.ts'],
     fileParallelism: false,
     sequence: { concurrent: false },
     testTimeout: 15000,

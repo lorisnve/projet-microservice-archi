@@ -8,7 +8,7 @@ export const truncateTables = async (): Promise<void> => {
 };
 
 export const createAdminAndLogin = async (app: Application): Promise<string> => {
-  const { default: User } = await import('../../models/User.js');
+  const { default: User } = await import('../../models/user.js');
   const hashed = await bcrypt.hash('AdminTest123!', 10);
   await User.create({ email: 'admin@test.com', password: hashed, role: 'ADMIN' });
   const res = await request(app).post('/api/v1/auth/login').send({

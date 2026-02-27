@@ -1,7 +1,7 @@
 ﻿import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { AuthService } from '../services/AuthService.js';
-import type { IUserRepository } from '../interfaces/IUserRepository.js';
-import type User from '../models/User.js';
+import { AuthService } from '../services/auth-service.js';
+import type { IUserRepository } from '../interfaces/user-repository.interface.js';
+import type User from '../models/user.js';
 
 vi.mock('bcrypt', () => ({
   default: {

@@ -1,8 +1,8 @@
-import bcrypt from 'bcrypt';
+﻿import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import defaultUserRepository from '../repositories/UserRepository.js';
-import type { IAuthService } from '../interfaces/IAuthService.js';
-import type { IUserRepository } from '../interfaces/IUserRepository.js';
+import defaultUserRepository from '../repositories/user-repository.js';
+import type { IAuthService } from '../interfaces/auth-service.interface.js';
+import type { IUserRepository } from '../interfaces/user-repository.interface.js';
 import type { AuthResult, RegisterResult } from '../types/index.js';
 
 const BCRYPT_ROUNDS = 10;
@@ -18,7 +18,7 @@ export class AuthService implements IAuthService {
   async register({ email, password }: { email: string; password: string }): Promise<RegisterResult> {
     const existing = await this.userRepository.findByEmail(email);
     if (existing) {
-      throw Object.assign(new Error('Cet email est déjà utilisé'), { status: 409 });
+      throw Object.assign(new Error('Cet email est dÃ©jÃ  utilisÃ©'), { status: 409 });
     }
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_ROUNDS);

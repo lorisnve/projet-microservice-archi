@@ -1,7 +1,7 @@
 ﻿import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { BookService } from '../services/BookService.js';
-import type { IBookRepository } from '../interfaces/IBookRepository.js';
-import type Book from '../models/Book.js';
+import { BookService } from '../services/book-service.js';
+import type { IBookRepository } from '../interfaces/book-repository.interface.js';
+import type Book from '../models/book.js';
 
 const makeBook = (overrides = {}): Book =>
   ({

@@ -1,4 +1,4 @@
-import type User from '../models/User.js';
+import type User from '../models/user.js';
 import type { CreateUserDto } from '../types/index.js';
 
 export interface IUserRepository {
