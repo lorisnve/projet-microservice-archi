@@ -6,4 +6,5 @@ export interface IBookService {
   findAll(query: BookListQuery): Promise<ApiResponseBody<BookDto[]>>;
   findById(id: string): Promise<BookDto>;
   update(id: string, data: UpdateBookDto): Promise<BookDto>;
+  delete(id: string): Promise<void>;
 }

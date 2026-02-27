@@ -7,4 +7,5 @@ export interface IBookRepository {
   findAllPaginated(query: BookListQuery): Promise<{ rows: Book[]; count: number }>;
   create(data: CreateBookDto): Promise<Book>;
   update(id: string, data: UpdateBookDto): Promise<Book | null>;
+  delete(id: string): Promise<boolean>;
 }

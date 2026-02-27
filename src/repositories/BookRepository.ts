@@ -37,6 +37,11 @@ export class BookRepository implements IBookRepository {
     if (!book) return null;
     return book.update(data);
   }
+
+  async delete(id: string): Promise<boolean> {
+    const deleted = await Book.destroy({ where: { id } });
+    return deleted > 0;
+  }
 }
 
 export default new BookRepository();
