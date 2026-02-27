@@ -39,6 +39,37 @@ export class BorrowService implements IBorrowService {
       returnedAt: borrow.returnedAt,
     };
   }
+
+  async returnBorrow(bookId: string, userId: string): Promise<BorrowDto> {
+    const book = await this.bookRepository.findById(bookId);
+    if (!book) {
+      throw Object.assign(new Error('Livre introuvable'), { status: 404 });
+    }
+
+    if (book.available) {
+      throw Object.assign(new Error('Ce livre n\'est pas actuellement emprunté'), { status: 409 });
+    }
+
+    const activeBorrow = await this.borrowRepository.findActiveByBookId(bookId);
+    if (!activeBorrow) {
+      throw Object.assign(new Error('Aucun emprunt actif trouvé pour ce livre'), { status: 404 });
+    }
+
+    if (activeBorrow.userId !== userId) {
+      throw Object.assign(new Error('Vous ne pouvez retourner que vos propres emprunts'), { status: 403 });
+    }
+
+    const returned = await this.borrowRepository.updateReturnDate(activeBorrow.id);
+    await this.bookRepository.update(bookId, { available: true });
+
+    return {
+      id: returned!.id,
+      bookId: returned!.bookId,
+      userId: returned!.userId,
+      borrowedAt: returned!.borrowedAt,
+      returnedAt: returned!.returnedAt,
+    };
+  }
 }
 
 export default new BorrowService();
