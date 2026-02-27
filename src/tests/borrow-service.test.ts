@@ -1,9 +1,9 @@
 ﻿import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { BorrowService } from '../services/BorrowService.js';
-import type { IBorrowRepository } from '../interfaces/IBorrowRepository.js';
-import type { IBookRepository } from '../interfaces/IBookRepository.js';
-import type Book from '../models/Book.js';
-import type Borrow from '../models/Borrow.js';
+import { BorrowService } from '../services/borrow-service.js';
+import type { IBorrowRepository } from '../interfaces/borrow-repository.interface.js';
+import type { IBookRepository } from '../interfaces/book-repository.interface.js';
+import type Book from '../models/book.js';
+import type Borrow from '../models/borrow.js';
 
 const makeBook = (overrides = {}): Book =>
   ({

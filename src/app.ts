@@ -1,11 +1,11 @@
 ﻿import express, { type Application, type Request, type Response, type NextFunction } from 'express';
 import cors from 'cors';
-import authRoutes from './routes/AuthRoutes.js';
-import monitoringRoutes from './routes/MonitoringRoutes.js';
-import { httpRequestsTotal, httpRequestDurationSeconds } from './controllers/MonitoringController.js';
-import bookRoutes from './routes/BookRoutes.js';
-import './models/Borrow.js';
-import { errorHandler } from './middlewares/ErrorHandler.js';
+import authRoutes from './routes/auth-routes.js';
+import monitoringRoutes from './routes/monitoring-routes.js';
+import { httpRequestsTotal, httpRequestDurationSeconds } from './controllers/monitoring-controller.js';
+import bookRoutes from './routes/book-routes.js';
+import './models/borrow.js';
+import { errorHandler } from './middlewares/error-handler.js';
 
 const app: Application = express();
 

@@ -1,6 +1,6 @@
-import type { Request, Response, NextFunction } from 'express';
+﻿import type { Request, Response, NextFunction } from 'express';
 import { ValidationError, UniqueConstraintError, DatabaseError } from 'sequelize';
-import { ApiResponse } from '../utils/ApiResponse.js';
+import { ApiResponse } from '../utils/api-response.js';
 import { log } from 'node:console';
 
 export function errorHandler(
@@ -11,17 +11,17 @@ export function errorHandler(
 ): Response {
   if (err instanceof ValidationError) {
     const errors = err.errors.map((e) => e.message);
-    return res.status(400).json(ApiResponse.error('Données invalides', 400, errors));
+    return res.status(400).json(ApiResponse.error('DonnÃ©es invalides', 400, errors));
   }
 
   if (err instanceof UniqueConstraintError) {
     const errors = err.errors.map((e) => e.message);
-    return res.status(409).json(ApiResponse.error('Cette valeur est déjà utilisée', 409, errors));
+    return res.status(409).json(ApiResponse.error('Cette valeur est dÃ©jÃ  utilisÃ©e', 409, errors));
   }
 
   if (err instanceof DatabaseError) {
-    log('Erreur de base de données :', err);
-    return res.status(500).json(ApiResponse.error('Erreur base de données', 500));
+    log('Erreur de base de donnÃ©es :', err);
+    return res.status(500).json(ApiResponse.error('Erreur base de donnÃ©es', 500));
   }
 
   const status = (err as Error & { status?: number }).status ?? 500;

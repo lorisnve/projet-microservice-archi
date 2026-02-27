@@ -1,5 +1,5 @@
-import type { BookDto, BookListQuery, CreateBookDto, UpdateBookDto } from '../types/index.js';
-import type { ApiResponseBody } from '../utils/ApiResponse.js';
+﻿import type { BookDto, BookListQuery, CreateBookDto, UpdateBookDto } from '../types/index.js';
+import type { ApiResponseBody } from '../utils/api-response.js';
 
 export interface IBookService {
   create(data: CreateBookDto): Promise<BookDto>;

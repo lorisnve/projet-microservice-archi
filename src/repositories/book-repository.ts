@@ -1,6 +1,6 @@
-import { Op } from 'sequelize';
-import Book from '../models/Book.js';
-import type { IBookRepository } from '../interfaces/IBookRepository.js';
+﻿import { Op } from 'sequelize';
+import Book from '../models/book.js';
+import type { IBookRepository } from '../interfaces/book-repository.interface.js';
 import type { BookListQuery, CreateBookDto, UpdateBookDto } from '../types/index.js';
 
 export class BookRepository implements IBookRepository {

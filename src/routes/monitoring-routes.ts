@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import monitoringController from '../controllers/MonitoringController.js';
+﻿import { Router } from 'express';
+import monitoringController from '../controllers/monitoring-controller.js';
 
 const router: Router = Router();
 

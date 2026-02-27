@@ -1,9 +1,9 @@
-﻿import defaultBorrowRepository from '../repositories/BorrowRepository.js';
-import defaultBookRepository from '../repositories/BookRepository.js';
+﻿import defaultBorrowRepository from '../repositories/borrow-repository.js';
+import defaultBookRepository from '../repositories/book-repository.js';
 import sequelize from '../config/database.js';
-import type { IBorrowRepository } from '../interfaces/IBorrowRepository.js';
-import type { IBookRepository } from '../interfaces/IBookRepository.js';
-import type { IBorrowService } from '../interfaces/IBorrowService.js';
+import type { IBorrowRepository } from '../interfaces/borrow-repository.interface.js';
+import type { IBookRepository } from '../interfaces/book-repository.interface.js';
+import type { IBorrowService } from '../interfaces/borrow-service.interface.js';
 import type { BorrowDto } from '../types/index.js';
 
 type TransactionRunner = <T>(fn: () => Promise<T>) => Promise<T>;

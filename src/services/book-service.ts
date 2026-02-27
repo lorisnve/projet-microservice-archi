@@ -1,9 +1,9 @@
-﻿import defaultBookRepository from '../repositories/BookRepository.js';
-import type { IBookRepository } from '../interfaces/IBookRepository.js';
-import type { IBookService } from '../interfaces/IBookService.js';
+﻿import defaultBookRepository from '../repositories/book-repository.js';
+import type { IBookRepository } from '../interfaces/book-repository.interface.js';
+import type { IBookService } from '../interfaces/book-service.interface.js';
 import type { BookDto, BookListQuery, CreateBookDto, UpdateBookDto } from '../types/index.js';
-import { ApiResponse } from '../utils/ApiResponse.js';
-import type { ApiResponseBody } from '../utils/ApiResponse.js';
+import { ApiResponse } from '../utils/api-response.js';
+import type { ApiResponseBody } from '../utils/api-response.js';
 
 export class BookService implements IBookService {
   private readonly bookRepository: IBookRepository;
