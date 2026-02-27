@@ -16,7 +16,6 @@ const PORT = process.env.PORT ?? 8080;
 app.use(cors());
 app.use(express.json());
 
-// tracking des métriques Prometheus
 app.use((req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
   res.on('finish', () => {
@@ -26,11 +25,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     httpRequestDurationSeconds.observe(labels, duration);
   });
   next();
-});
+})
 
-// routes de monitoring (health + metrics)
-app.use('/', monitoringRoutes);
-
+app.use('/api/v1', monitoringRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/books', bookRoutes);
 
