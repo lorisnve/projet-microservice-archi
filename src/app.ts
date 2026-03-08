@@ -23,7 +23,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.use('/api/v1', monitoringRoutes);
+app.use('/', monitoringRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/books', bookRoutes);
 
