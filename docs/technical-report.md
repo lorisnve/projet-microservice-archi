@@ -273,6 +273,8 @@ Le fichier `src/tracing.ts` est importé en **premier** dans `src/index.ts` (ava
 - Identifier les goulots d'étranglement dans la chaîne d'appels
 - Comparer les traces entre différentes requêtes
 
+![Jaeger — visualisation des traces distribuées](screenshots/jaeger.png)
+
 ### 3.8 Documentation API interactive (Swagger/OpenAPI)
 
 L'API est documentée via une spécification **OpenAPI 3.0.3** servie par **Swagger UI** :
@@ -288,6 +290,8 @@ L'API est documentée via une spécification **OpenAPI 3.0.3** servie par **Swag
 - Monitoring : `GET /health`, `GET /metrics`
 
 **Schémas définis :** `Book`, `Borrow`, `ApiResponse` avec exemples et descriptions pour chaque champ. Swagger UI permet de tester les endpoints directement depuis le navigateur avec un token JWT.
+
+![Swagger UI — documentation interactive de l'API](screenshots/swagger-doc.png)
 
 ### 3.9 Gestion des erreurs
 
