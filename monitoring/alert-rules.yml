@@ -1,0 +1,45 @@
+groups:
+  - name: library-service-alerts
+    interval: 30s
+    rules:
+
+      # ── Alerte 1 : Taux d'erreur élevé ──────────────────────────────────────
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(http_requests_total{status_code=~"5.."}[5m]))
+          /
+          sum(rate(http_requests_total[5m])) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Taux d'erreur HTTP > 5%"
+          description: >
+            Le taux d'erreur 5xx est de {{ printf "%.2f" $value | humanizePercentage }}
+            sur les 5 dernières minutes.
+
+      # ── Alerte 2 : Latence P99 élevée ───────────────────────────────────────
+      - alert: HighLatencyP99
+        expr: |
+          histogram_quantile(0.99,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le, route)
+          ) > 0.5
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Latence P99 > 500 ms"
+          description: >
+            La latence P99 sur la route {{ $labels.route }} est
+            {{ printf "%.3f" $value }}s (seuil : 0.5s).
+
+      # ── Alerte 3 : Service indisponible ─────────────────────────────────────
+      - alert: ServiceDown
+        expr: up{job="library-service"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Le service library-service est DOWN"
+          description: >
+            L'instance {{ $labels.instance }} ne répond plus depuis plus d'1 minute.

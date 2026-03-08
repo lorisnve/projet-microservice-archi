@@ -1,0 +1,49 @@
+# Internal ClusterIP service for PostgreSQL
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: library-system
+  labels:
+    app: postgres
+spec:
+  type: ClusterIP
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+# Internal ClusterIP service for library-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: library-service-clusterip
+  namespace: library-system
+  labels:
+    app: library-service
+spec:
+  type: ClusterIP
+  selector:
+    app: library-service
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+---
+# External LoadBalancer for library-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: library-service-lb
+  namespace: library-system
+  labels:
+    app: library-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: library-service
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
