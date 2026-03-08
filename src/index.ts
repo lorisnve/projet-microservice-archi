@@ -1,4 +1,5 @@
-﻿import 'dotenv/config';
+﻿import './tracing.js';
+import 'dotenv/config';
 import sequelize from './config/database.js';
 import app from './app.js';
 import { seedAdminUser } from './seeders/admin-seeder.js';

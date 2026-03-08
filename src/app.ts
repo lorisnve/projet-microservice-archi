@@ -1,5 +1,7 @@
 ﻿import express, { type Application, type Request, type Response, type NextFunction } from 'express';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger.js';
 import authRoutes from './routes/auth-routes.js';
 import monitoringRoutes from './routes/monitoring-routes.js';
 import { httpRequestsTotal, httpRequestDurationSeconds } from './controllers/monitoring-controller.js';
@@ -11,6 +13,8 @@ const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();

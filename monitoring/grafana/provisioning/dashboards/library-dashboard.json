@@ -137,6 +137,50 @@
       "fieldConfig": {
         "defaults": { "unit": "s" }
       }
+    },
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "Utilisation CPU",
+      "gridPos": { "x": 0, "y": 16, "w": 12, "h": 8 },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(process_cpu_seconds_total{job=\"library-service\"}[1m])",
+          "legendFormat": "Library Service CPU",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(node_cpu_seconds_total{mode!=\"idle\"}[1m])",
+          "legendFormat": "Node CPU ({{mode}})",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "percentunit", "custom": { "lineWidth": 2 } }
+      }
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "Utilisation Mémoire",
+      "gridPos": { "x": 12, "y": 16, "w": 12, "h": 8 },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "process_resident_memory_bytes{job=\"library-service\"}",
+          "legendFormat": "Library Service RSS",
+          "refId": "A"
+        },
+        {
+          "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes",
+          "legendFormat": "Node Memory Used",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "bytes", "custom": { "lineWidth": 2 } }
+      }
     }
   ]
 }
