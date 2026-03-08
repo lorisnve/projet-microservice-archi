@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: library-config
+  namespace: library-system
+  labels:
+    app: library-service
+data:
+  PORT: "8080"
+  DB_HOST: "postgres-service"
+  DB_PORT: "5432"
+  DB_NAME: "library_db"
+  DB_DIALECT: "postgres"
+  ADMIN_EMAIL: "admin@library.com"
+  NODE_ENV: "production"
