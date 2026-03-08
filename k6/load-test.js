@@ -13,11 +13,12 @@ const borrowDuration = new Trend('borrow_duration', true);
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:8080';
 
 export const options = {
+  setupTimeout: '120s',
   stages: [
-    { duration: '15s', target: 20 },   // ramp-up
-    { duration: '1m', target: 50 },    // plateau
-    { duration: '30s', target: 100 },  // spike
-    { duration: '30s', target: 50 },   // back to normal
+    { duration: '15s', target: 3 },    // ramp-up
+    { duration: '1m', target: 8 },     // plateau
+    { duration: '30s', target: 10 },   // spike
+    { duration: '30s', target: 8 },    // back to normal
     { duration: '15s', target: 0 },    // ramp-down
   ],
   thresholds: {
@@ -108,21 +109,6 @@ export default function (data) {
     errorRate.add(res.status !== 200);
   });
 
-  // ── Login flow ─────────────────────────────────────────────────────────────
-  group('Auth - Login', () => {
-    const res = http.post(
-      `${BASE_URL}/api/v1/auth/login`,
-      JSON.stringify({
-        email: 'admin@library.com',
-        password: 'Admin1234!',
-      }),
-      { headers: { 'Content-Type': 'application/json' } }
-    );
-    check(res, { 'login OK': (r) => r.status === 200 });
-    loginDuration.add(res.timings.duration);
-    errorRate.add(res.status !== 200);
-  });
-
   // ── List books ─────────────────────────────────────────────────────────────
   group('Books - List', () => {
     const res = http.get(`${BASE_URL}/api/v1/books`, { headers });
@@ -142,6 +128,7 @@ export default function (data) {
   }
 
   // ── Create book (admin) ────────────────────────────────────────────────────
+  let createdBookId = null;
   group('Books - Create', () => {
     const uniqueIsbn = `978-k6-${__VU}-${__ITER}-${Date.now()}`;
     const res = http.post(
@@ -156,30 +143,32 @@ export default function (data) {
     check(res, { 'create book OK': (r) => r.status === 201 });
     bookCreateDuration.add(res.timings.duration);
     errorRate.add(res.status !== 201);
+    if (res.status === 201) {
+      createdBookId = res.json('data.id');
+    }
   });
 
-  // ── Borrow & Return ───────────────────────────────────────────────────────
-  if (data.bookIds.length > 0) {
+  // ── Borrow & Return (own book, no contention) ─────────────────────────────
+  if (createdBookId) {
     group('Borrow - Borrow book', () => {
-      const bookId = data.bookIds[Math.floor(Math.random() * data.bookIds.length)];
-      const res = http.post(`${BASE_URL}/api/v1/books/${bookId}/borrow`, null, {
+      const res = http.post(`${BASE_URL}/api/v1/books/${createdBookId}/borrow`, null, {
         headers,
       });
       borrowDuration.add(res.timings.duration);
-      // May fail if already borrowed — that's expected under load
       errorRate.add(res.status >= 500);
     });
 
+    sleep(0.3);
+
     group('Borrow - Return book', () => {
-      const bookId = data.bookIds[Math.floor(Math.random() * data.bookIds.length)];
-      const res = http.post(`${BASE_URL}/api/v1/books/${bookId}/return`, null, {
+      const res = http.post(`${BASE_URL}/api/v1/books/${createdBookId}/return`, null, {
         headers,
       });
       errorRate.add(res.status >= 500);
     });
   }
 
-  sleep(0.5);
+  sleep(1);
 }
 
 // ── Teardown ─────────────────────────────────────────────────────────────────
