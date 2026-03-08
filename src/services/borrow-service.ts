@@ -5,6 +5,7 @@ import type { IBorrowRepository } from '../interfaces/borrow-repository.interfac
 import type { IBookRepository } from '../interfaces/book-repository.interface.js';
 import type { IBorrowService } from '../interfaces/borrow-service.interface.js';
 import type { BorrowDto } from '../types/index.js';
+import { booksBorrowedTotal, dbQueryDurationSeconds } from '../controllers/monitoring-controller.js';
 
 type TransactionRunner = <T>(fn: () => Promise<T>) => Promise<T>;
 
@@ -36,8 +37,11 @@ export class BorrowService implements IBorrowService {
     }
 
     return this.runInTransaction(async () => {
+      const start = Date.now();
       await this.bookRepository.update(bookId, { available: false });
       const borrow = await this.borrowRepository.create(bookId, userId);
+      dbQueryDurationSeconds.observe({ operation: 'borrow' }, (Date.now() - start) / 1000);
+      booksBorrowedTotal.inc();
       return {
         id: borrow.id,
         bookId: borrow.bookId,
@@ -68,8 +72,10 @@ export class BorrowService implements IBorrowService {
     }
 
     return this.runInTransaction(async () => {
+      const start = Date.now();
       const returned = await this.borrowRepository.updateReturnDate(activeBorrow.id);
       await this.bookRepository.update(bookId, { available: true });
+      dbQueryDurationSeconds.observe({ operation: 'return' }, (Date.now() - start) / 1000);
       return {
         id: returned!.id,
         bookId: returned!.bookId,
