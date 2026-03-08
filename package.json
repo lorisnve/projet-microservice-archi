@@ -28,6 +28,11 @@
   },
   "homepage": "https://github.com/lorisnve/projet-microservice-archi#readme",
   "dependencies": {
+    "@opentelemetry/auto-instrumentations-node": "^0.71.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.213.0",
+    "@opentelemetry/resources": "^2.6.0",
+    "@opentelemetry/sdk-node": "^0.213.0",
+    "@opentelemetry/semantic-conventions": "^1.40.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
@@ -37,7 +42,9 @@
     "pg": "^8.19.0",
     "pg-hstore": "^2.3.4",
     "prom-client": "^15.1.3",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -47,6 +54,8 @@
     "@types/node": "^25.3.1",
     "@types/pg": "^8.16.0",
     "@types/supertest": "^7.2.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "@vitest/coverage-v8": "^4.0.18",
     "eslint": "^10.0.2",
     "nodemon": "^3.1.14",
