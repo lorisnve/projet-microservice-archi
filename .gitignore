@@ -17,3 +17,7 @@ coverage/
 # Documents
 *.pdf
 *.png
+
+# Allow docs assets
+!docs/**/*.pdf
+!docs/**/*.png
