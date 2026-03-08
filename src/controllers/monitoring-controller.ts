@@ -27,6 +27,20 @@ export const httpRequestDurationSeconds = new Histogram({
   registers: [register],
 });
 
+export const booksBorrowedTotal = new Counter({
+  name: 'books_borrowed_total',
+  help: 'Nombre total de livres empruntés',
+  registers: [register],
+});
+
+export const dbQueryDurationSeconds = new Histogram({
+  name: 'db_query_duration_seconds',
+  help: 'Durée des requêtes base de données en secondes',
+  labelNames: ['operation'],
+  buckets: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1],
+  registers: [register],
+});
+
 // ── Controller ──
 
 const monitoringController = {
