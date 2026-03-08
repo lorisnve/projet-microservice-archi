@@ -500,11 +500,11 @@ Les tests de performance sont réalisés avec **k6** (Grafana Labs), un outil de
 
 | Phase      | Durée | VUs cibles | Description                    |
 |------------|-------|------------|--------------------------------|
-| Ramp-up    | 15s   | 0 → 3      | Montée progressive             |
-| Plateau    | 60s   | 8           | Charge nominale                |
-| Spike      | 30s   | 10          | Pic de charge                  |
-| Recovery   | 30s   | 8           | Retour à la normale            |
-| Ramp-down  | 15s   | 8 → 0      | Descente progressive           |
+| Ramp-up    | 15s   | 0 → 20     | Montée progressive             |
+| Plateau    | 60s   | 50          | Charge nominale                |
+| Spike      | 30s   | 100         | Pic de charge                  |
+| Recovery   | 30s   | 50          | Retour à la normale            |
+| Ramp-down  | 15s   | 50 → 0     | Descente progressive           |
 
 **Endpoints testés par chaque VU (Virtual User) :**
 1. `GET /health` — healthcheck
@@ -531,34 +531,36 @@ Les tests ont été exécutés contre la stack Docker Compose sur une machine lo
 
 | Métrique                | Valeur          | Seuil   | Statut |
 |-------------------------|-----------------|---------|--------|
-| Durée totale            | 3 min 18 s      | —       | —      |
-| Requêtes totales        | 1 601           | —       | —      |
-| Throughput              | **8 req/s**     | —       | —      |
-| Itérations complètes    | 259             | —       | —      |
-| Checks réussis          | **100%** (1 065)  | —     | —      |
-| P95 latence             | **24.1 ms**     | < 500   | ✅      |
-| P99 latence             | **56.3 ms**     | < 1 000 | ✅      |
+| Durée totale            | 2 min 31 s      | —       | —      |
+| Requêtes totales        | 18 289          | —       | —      |
+| Throughput              | **120 req/s**   | —       | —      |
+| Itérations complètes    | 3 046           | —       | —      |
+| Checks réussis          | **100%** (12 185) | —     | —      |
+| P95 latence             | **28.56 ms**    | < 500   | ✅      |
+| P99 latence             | **48.63 ms**    | < 1 000 | ✅      |
 | Taux d'erreur (5xx)     | **0.00%**       | < 5%    | ✅      |
 
 **Latence par endpoint :**
 
 | Métrique custom          | Moyenne  | P90      | P95      |
 |--------------------------|----------|----------|----------|
-| `book_list_duration`     | 8.2 ms   | 10.8 ms  | 13.7 ms  |
-| `book_create_duration`   | 9.2 ms   | 12.6 ms  | 13.6 ms  |
-| `borrow_duration`        | 466 ms   | 19.8 ms  | 21.8 ms  |
+| `book_list_duration`     | 8.8 ms   | 13.8 ms  | 16.7 ms  |
+| `book_create_duration`   | 10.0 ms  | 16.4 ms  | 19.7 ms  |
+| `borrow_duration`        | 17.5 ms  | 30.3 ms  | 36.9 ms  |
 
 ### 6.3 Analyse
 
 - **Login isolé en setup** : le hashage bcrypt (10 rounds) est intentionnellement coûteux en CPU (~300 ms). En l'isolant dans la phase `setup()`, on évite de saturer le thread Node.js et on mesure la performance réelle des endpoints métier.
 
-- **CRUD livres** : la latence est excellente (< 15 ms en P95), confirmant l'efficacité de Sequelize avec PostgreSQL pour les requêtes simples.
+- **CRUD livres** : la latence est excellente (< 20 ms en P95), confirmant l'efficacité de Sequelize avec PostgreSQL pour les requêtes simples, même sous 100 VUs concurrents.
 
-- **Emprunts** : la moyenne élevée (466 ms) inclut quelques timeouts isolés en fin de test lors du ramp-down. Le P90 (19.8 ms) reflète la latence réelle, confirmant la bonne performance des **transactions Sequelize** englobant deux opérations.
+- **Emprunts** : 17.5 ms en moyenne et 36.9 ms en P95, confirmant la bonne performance des **transactions Sequelize** englobant deux opérations (mise à jour du livre + création de l'emprunt).
 
 - **Contention éliminée** : chaque VU crée son propre livre puis l'emprunte/retourne, évitant les conflits de verrouillage sur des ressources partagées.
 
-- **Throughput** : 8 req/s avec 10 VUs sur une machine locale exécutant simultanément Docker Desktop, PostgreSQL, Prometheus et Grafana. En production, le HPA Kubernetes permettrait de scaler horizontalement pour absorber davantage de charge.
+- **Pool de connexions** : le pool Sequelize est configuré à 30 connexions max (`pool.max: 30`) pour supporter la charge de 100 VUs sans saturation.
+
+- **Throughput** : 120 req/s avec 100 VUs sur une machine locale exécutant simultanément Docker Desktop, PostgreSQL, Prometheus et Grafana. En production, le HPA Kubernetes permettrait de scaler horizontalement pour absorber davantage de charge.
 
 - **Taux d'erreur** : 0% — aucune erreur 5xx, démontrant la stabilité du service sous charge.
 
