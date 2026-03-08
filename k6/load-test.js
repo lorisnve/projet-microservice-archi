@@ -15,10 +15,10 @@ const BASE_URL = __ENV.BASE_URL || 'http://localhost:8080';
 export const options = {
   setupTimeout: '120s',
   stages: [
-    { duration: '15s', target: 3 },    // ramp-up
-    { duration: '1m', target: 8 },     // plateau
-    { duration: '30s', target: 10 },   // spike
-    { duration: '30s', target: 8 },    // back to normal
+    { duration: '15s', target: 20 },   // ramp-up
+    { duration: '1m', target: 50 },    // plateau
+    { duration: '30s', target: 100 },  // spike
+    { duration: '30s', target: 50 },   // recovery
     { duration: '15s', target: 0 },    // ramp-down
   ],
   thresholds: {
@@ -168,7 +168,7 @@ export default function (data) {
     });
   }
 
-  sleep(1);
+  sleep(2);
 }
 
 // ── Teardown ─────────────────────────────────────────────────────────────────
