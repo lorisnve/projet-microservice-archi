@@ -135,6 +135,15 @@ Cela lance 4 services :
 | `prometheus`       | 9090   | Collecte de métriques        |
 | `grafana`          | 3001   | Tableaux de bord             |
 
+**URLs utiles après démarrage :**
+
+| Interface        | URL                                  |
+|------------------|--------------------------------------|
+| API REST         | http://localhost:8080                |
+| Swagger UI       | http://localhost:8080/api-docs       |
+| Prometheus       | http://localhost:9090                |
+| Grafana          | http://localhost:3001 (admin/admin)  |
+
 ### Kubernetes (Minikube)
 
 ```bash
