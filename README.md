@@ -244,12 +244,12 @@ k6 run -e BASE_URL=http://localhost:9999 k6/load-test.js
 
 | Métrique              | Valeur         |
 |-----------------------|----------------|
-| Requêtes totales      | ~58 800        |
-| Throughput            | ~391 req/s     |
-| Latence P95           | 390 ms ✅      |
-| Latence P99           | 785 ms ✅      |
+| Requêtes totales      | ~18 300        |
+| Throughput            | ~120 req/s     |
+| Latence P95           | 28.56 ms ✅    |
+| Latence P99           | 48.63 ms ✅    |
 | Taux d'erreur         | 0.00% ✅       |
-| Checks réussis        | 100% (42 041)  |
+| Checks réussis        | 100% (12 185)  |
 
 ---
 
